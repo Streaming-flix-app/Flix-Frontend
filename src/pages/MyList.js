@@ -32,7 +32,7 @@ export default function MyList() {
     setIsScrolled(window.pageYOffset === 0 ? false : true);
     return () => (window.onscroll = null);
   };
-
+   
 
   return (
     <Container>

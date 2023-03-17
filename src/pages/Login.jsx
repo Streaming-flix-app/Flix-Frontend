@@ -12,10 +12,14 @@ import {
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+
+  const [lnerr,setlnerr] = useState("");
   const [formVal, setFormVal] = useState({ email: "", password: "" });
   const navigate = useNavigate();
   const authentication = getAuth(app);
   const handleLogIn = async () => {
+    
+    setlnerr("");
     try {
       const { email, password } = formVal;
       await signInWithEmailAndPassword(authentication, email, password)
@@ -28,6 +32,9 @@ export default function Login() {
       //   }
       // );
     } catch (err) {
+      if(formVal.password.length<6)setlnerr("wrong password");
+      else setlnerr("Invalid email");
+      // setlnerr(err);
       console.log(err);
     }
   };
@@ -51,6 +58,10 @@ export default function Login() {
                 <h3>Login</h3>
               </div>
               <div className="container flex column">
+              {
+                lnerr.length>0 && <div class="errmsg" >{lnerr}</div>
+              }
+              
                 <input
                   type="email"
                   placeholder="Email Address "
@@ -106,6 +117,12 @@ const Container = styled.div`
         color: white;
         .container {
           gap: 2rem;
+          .errmsg{
+            text-align:center;
+               color:yellow;
+            padding: 0.5rem 1rem;
+            width: 15rem;
+          }
           input {
             padding: 0.5rem 1rem;
             width: 15rem;
