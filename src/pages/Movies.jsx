@@ -10,7 +10,7 @@ import Slider from "../components/Slider";
 import SelectGenre from "../components/SelectGenre";
 import { useNavigate } from "react-router-dom";
 export default function Movies() {
- 
+  
   const authentication = getAuth(app);
   const [isScrolled, setIsScrolled] = useState(false);
   const movies = useSelector((state) => state.netflix.movies);
@@ -31,6 +31,7 @@ export default function Movies() {
     
   });                                                    
  //########################################
+  window.scrollTo(0,0);
   window.onscroll = () => {
     setIsScrolled(window.pageYOffset === 0 ? false : true);
     return () => (window.onscroll = null);

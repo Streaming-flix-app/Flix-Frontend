@@ -25,10 +25,13 @@ export default function Signup() {
           console.log(res);
          });
 
-      }catch(err){
+      }catch(err){  
+        let _er=JSON.stringify(err);
+        let _erAr=_er.split('"');
+       
         if(formVal.password.length<6){setlnerr("password should have atleast 6 character");}
-        else {setlnerr("Invalid Email");}
-        console.log(err);    
+        else if(_erAr.length>=3) {setlnerr(_erAr[3]);}
+        else {setlnerr("Invalid email");} 
       }
   
   

@@ -7,10 +7,11 @@ import logo2 from "../assets/logo2.mp4"
 export default function Header(props) {
 
   const navigate=useNavigate();
+
+  
   return (
     <Container className="flex a-center j-between">
-      <div className="logo">
-        {/* <img src={logo} alt="logo" /> */}
+      <div className="logo" >
         <video src={logo2} autoPlay loop muted/>
       </div>
       {props.btn && (

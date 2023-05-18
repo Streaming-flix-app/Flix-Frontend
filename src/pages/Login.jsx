@@ -23,22 +23,16 @@ export default function Login() {
     try {
       const { email, password } = formVal;
       await signInWithEmailAndPassword(authentication, email, password)
-      // .then(
-      //   (res) => {
-      //     console.log(res);
-      //     onAuthStateChanged(authentication, (currentUser) => {
-      //       if (currentUser) navigate("/");
-      //     });
-      //   }
-      // );
+     
     } catch (err) {
-      if(formVal.password.length<6)setlnerr("wrong password");
-      else setlnerr("Invalid email");
-      // setlnerr(err);
-      console.log(err);
+       let _er = JSON.stringify(err);
+       let _erAr = _er.split('"'); 
+      if(formVal.password.length<1)setlnerr("Enter email/password");
+      else if(_erAr.length>=3) setlnerr(_erAr[3]);
+      else setlnerr("Invalid email/password");
+     
     }
   };
-
   
    onAuthStateChanged(authentication, (currentUser) => { //##
             if (currentUser) navigate("/");              //##

@@ -23,6 +23,8 @@ export default React.memo( function TvShow() {
   useEffect(() => {    
     if (genresLoaded) dispatch(fetchMovies({ type: "tv" }));
   },[genresLoaded]);
+  window.scrollTo(0, 0);
+
   window.onscroll = () => {
     setIsScrolled(window.pageYOffset === 0 ? false : true);
     return () => (window.onscroll = null);

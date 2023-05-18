@@ -39,6 +39,7 @@ export default  function Netflix() {
   
   const genres=useSelector((state)=>state.netflix.genres);//##
   
+  window.scrollTo(0, 0);
  
   window.onscroll = ()=>{
     setIsScrolled(window.pageYOffset === 0?false:true);

@@ -8,7 +8,7 @@ export default function Slider({movies}) {
     <div>
     {
       movies!==undefined && movies.length > 0?
-      <>
+      <>  
 
         <CardSlider title="Trending Now"  data={getMoviesFromRange(0,10)} />
         <CardSlider title="New Releases"  data={getMoviesFromRange(10,20)} />

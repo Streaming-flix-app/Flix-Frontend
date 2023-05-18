@@ -32,6 +32,7 @@ export default function MyList() {
     setIsScrolled(window.pageYOffset === 0 ? false : true);
     return () => (window.onscroll = null);
   };
+  window.scrollTo(0, 0);
    
 
   return (

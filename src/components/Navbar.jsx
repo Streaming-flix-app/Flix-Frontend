@@ -23,10 +23,19 @@ export default function Navbar({isScrolled}) {
   ];
   const [showSearch, setShowSearch] = useState(false);
   const [inputHover, setinputHover] = useState(false);
-  const Logout= ()=>{
-    signOut(getAuth(app));
-    navigate("/login");
-    window.location.reload();
+  const Logout= async()=>{
+    try{
+      await signOut(getAuth(app));
+      navigate("/login");
+      window.location.reload();
+    }
+    catch(e){
+      console.log(e);
+    }
+  }
+
+  const _home=(link)=>{
+     setTimeout(()=>navigate(link),10);
   }
 
   return (
@@ -34,7 +43,7 @@ export default function Navbar({isScrolled}) {
       <Container>
         <nav className={`flex ${isScrolled ? "scrolled" : ""}`}>
           <div className="left flex a-center">
-            <div className="brand flex a-center j-center">
+            <div className="brand flex a-center j-center" onClick={()=>_home("/")}>
               {/* <img src={logo} alt="logo" /> */}
               <video src={logoV} autoPlay loop muted/>
               
@@ -124,7 +133,7 @@ const Container = styled.div`
       }
       .links {
         list-style-type: none;
-        gap: 2rem;
+        gap: 1.5rem;
         li {
           a {
             color: white;

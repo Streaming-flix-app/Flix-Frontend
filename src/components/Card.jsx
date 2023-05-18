@@ -109,7 +109,6 @@ export default function Card({movieData,isLiked=false}) {
 
 
 const Container = styled.div`
- max-width:230px;
  width: 230px;
  height:100%;
  cursor: pointer;
