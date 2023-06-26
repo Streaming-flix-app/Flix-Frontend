@@ -35,6 +35,10 @@ export default function Login() {
   };
   
    onAuthStateChanged(authentication, (currentUser) => { //##
+              
+              // let data={'email':currentUser.email};
+              // console.log(data);
+             localStorage.setItem('FlixEmail',currentUser.email);
             if (currentUser) navigate("/");              //##
           });                                            //##
          

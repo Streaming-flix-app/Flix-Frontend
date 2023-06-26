@@ -14,8 +14,7 @@ import { useDispatch } from 'react-redux';
 import { removeFromLikedMovies } from '../store';
 export default function Card({movieData,isLiked=false}) {
   
-    const [isHovered,setIsHovered]=useState(false);
-    
+    const [isHovered,setIsHovered]=useState(false);    
     const navigate=useNavigate();
     const authentication= getAuth(app);
     const [email,setEmail] = useState(undefined);

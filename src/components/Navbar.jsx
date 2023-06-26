@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {useEffect,useState } from 'react'
 import styled from 'styled-components'
 // import logo from "../assets/logo.png"
 import logoV from "../assets/logo2.mp4"
@@ -25,6 +25,7 @@ export default function Navbar({isScrolled}) {
   const [inputHover, setinputHover] = useState(false);
   const Logout= async()=>{
     try{
+      localStorage.clear();
       await signOut(getAuth(app));
       navigate("/login");
       window.location.reload();
@@ -37,6 +38,30 @@ export default function Navbar({isScrolled}) {
   const _home=(link)=>{
      setTimeout(()=>navigate(link),10);
   }
+
+
+  const [user_name,set_user_name]=useState("");
+  const [user_email,set_user_email]=useState("");
+  const [show_logout_btn,set_logout_btn]=useState(false);
+  useEffect(()=>{
+        const _eml=localStorage.getItem('FlixEmail');
+        // console.log(_eml);
+        let nm=_eml.split('@');
+        const len=nm[0].length;
+        nm= nm[0][0]+nm[0][len-1];
+        // console.log(nm);
+         set_user_name(nm);
+         set_user_email(_eml);
+
+  },[]);
+
+  
+  // window.addEventListener("click", (event) => {
+  //        setTimeout(() => {
+  //          if(show_logout_btn)set_logout_btn(false);          
+  //        }, 20);
+  // });
+
 
   return (
     <>
@@ -91,12 +116,27 @@ export default function Navbar({isScrolled}) {
             <div className="pro" title='Upgrade to Pro' onClick={()=>navigate("/subscription")}>
               <FaMoneyCheckAlt />
             </div>
-            <button onClick={Logout} title="logout">
-              <FaPowerOff />
-            </button>
+             <div className='user-profile'>
+               <div className='nm'  onClick={()=>set_logout_btn(!show_logout_btn)}>
+               <h2>{user_name.toUpperCase()}</h2>
+               </div>
+              {
+               show_logout_btn &&<>
+               <div className='options' onClick={()=>set_logout_btn(true)}>
+                    <div>
+                    {user_email}
+                    </div>
+                    <button onClick={Logout} title="logout">
+                      <FaPowerOff />
+                    </button>
+                </div>
+               </>
+                }
+
+             </div> 
           </div>
         </nav>
-      </Container>
+      </Container>  
     </>
   );
 }
@@ -154,10 +194,49 @@ const Container = styled.div`
           font-size: 1.8rem;
         }
       }
+
+      .user-profile {
+        .nm {
+          &:hover {
+            cursor: pointer;
+            opacity: 100%;
+          }
+          opacity: 60%;
+          background-color: rgb(203, 193, 193);
+          padding: 0.5rem;
+          width: 3.5rem;
+          border: 2px solid black;
+          color: blue;
+          border-radius: 45% 45% 45% 0;
+        }
+        .options {
+          &:hover {
+            opacity: 100%;
+          }
+          ${"" /* transition: 10s ease-in-out; */}
+          background-color: black;
+          max-width: 120px;
+          opacity: 70%;
+          overflow-wrap: anywhere;
+          text-align: center;
+          margin: 0 2rem 0 0;
+          position: fixed;
+          display: absolute;
+          right: 0.8rem;
+          ${"" /* width:auto; */}
+          padding:0.5rem 0.3rem 0 0.3rem;
+          border: 1px solid black;
+        }
+      }
       button {
+        margin: 0.3rem 0 0 0;
         background-color: transparent;
         border: none;
         cursor: pointer;
+        width: 100%;
+        &:hover {
+          background-color: grey;
+        }
         &:focus {
           outline: none;
         }
@@ -166,6 +245,7 @@ const Container = styled.div`
           font-size: 1.2rem;
         }
       }
+
       .search {
         display: flex;
         gap: 0.4rem;
