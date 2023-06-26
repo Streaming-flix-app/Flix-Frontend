@@ -46,12 +46,14 @@ export default function Navbar({isScrolled}) {
   const _eml=localStorage.getItem('FlixEmail');
   useEffect(()=>{
         // console.log(_eml);
-        if(_eml){
+        console.log("1");
+        if(_eml!==null){
+          console.log("2");
         let nm=_eml.split('@');
         const len=nm[0].length;
         nm= nm[0][0]+nm[0][len-1];
         // console.log(nm);
-         set_user_name(nm);
+         set_user_name(nm); 
          set_user_email(_eml);}
 
   },[_eml]);
