@@ -43,17 +43,18 @@ export default function Navbar({isScrolled}) {
   const [user_name,set_user_name]=useState("");
   const [user_email,set_user_email]=useState("");
   const [show_logout_btn,set_logout_btn]=useState(false);
+  const _eml=localStorage.getItem('FlixEmail');
   useEffect(()=>{
-        const _eml=localStorage.getItem('FlixEmail');
         // console.log(_eml);
+        if(_eml){
         let nm=_eml.split('@');
         const len=nm[0].length;
         nm= nm[0][0]+nm[0][len-1];
         // console.log(nm);
          set_user_name(nm);
-         set_user_email(_eml);
+         set_user_email(_eml);}
 
-  },[]);
+  },[_eml]);
 
   
   // window.addEventListener("click", (event) => {
