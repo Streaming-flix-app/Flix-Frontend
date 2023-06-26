@@ -214,7 +214,7 @@ const Container = styled.div`
             opacity: 100%;
           }
           ${"" /* transition: 10s ease-in-out; */}
-          background-color: black;
+          background-color: rgb(77, 70, 70);
           max-width: 120px;
           opacity: 70%;
           overflow-wrap: anywhere;
