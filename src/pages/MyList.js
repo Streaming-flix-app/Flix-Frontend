@@ -37,7 +37,7 @@ export default function MyList() {
 
   return (
     <Container>
-      <div className="navbar">
+      <div className="navbar">   
         <Navbar isScrolled={isScrolled} />
       </div>
       <div className="content flex column">

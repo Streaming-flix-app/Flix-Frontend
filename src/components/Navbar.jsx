@@ -26,9 +26,11 @@ export default function Navbar({isScrolled}) {
   const Logout= async()=>{
     try{
       localStorage.clear();
-      await signOut(getAuth(app));
-      navigate("/login");
-      window.location.reload();
+      signOut(getAuth(app)).then((err,res)=>{
+        if(res)
+        navigate("/login");
+      })
+      
     }
     catch(e){
       console.log(e);

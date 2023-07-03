@@ -11,7 +11,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import app from '../utils/firbase-config';
 import axiosIntance from '../utils/axios';
 import { useDispatch } from 'react-redux';
-import { removeFromLikedMovies } from '../store';
+import { getUserLikedMovies, removeFromLikedMovies } from '../store';
 export default function Card({movieData,isLiked=false}) {
   
     const [isHovered,setIsHovered]=useState(false);    
@@ -77,7 +77,7 @@ export default function Card({movieData,isLiked=false}) {
                         dispatch(
                           removeFromLikedMovies({ email, id: movieData.id })
                         );
-                        window.location.reload();
+                        dispatch(getUserLikedMovies(email));                        
                       }}
                     />
                   ) : (

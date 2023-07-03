@@ -1,8 +1,15 @@
-import React, { useState } from "react";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import React, { useEffect, useState } from "react";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { BsArrowLeft, BsArrowLeftCircle } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import app from "../utils/firbase-config";
+import axiosIntance from "../utils/axios";
+import app_logo  from "../app_logo.png";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import PaymentConfirmation from "../components/PaymentConfirmation";
 
 export default function Xcription() {
   const [std_no, set_std] = useState(0);
@@ -10,32 +17,85 @@ export default function Xcription() {
   let cost=[199,499,649];
 
 
+  const [email, setEmail] = useState(undefined);
+  const [payment,setPayment]=useState(false);
+  const [orderId,setOrderId]=useState("");
+  const [paymentId,setPaymentId]=useState("");
+  const [signature,setSignature]=useState("");
+  
+  const [show, setShow] = useState(false);
 
-  const detect=async()=>{ return;
-    /*t
-    const image = await faceapi.bufferToImage(myBuffer)
-const detection = await faceapi.detectSingleFace(image).withFaceLandmarks().withFaceDescriptor();
-if (!detection) {
-  // face not detected
-  return;
-}
-const descriptors = [detection.descriptor];
-const labeledDescriptors = [
-  new faceapi.LabeledFaceDescriptors('me', descriptors)
-];
-const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors);
+  const authentication = getAuth(app);  
+  onAuthStateChanged(authentication, (currentUser) => {
+    if (currentUser) setEmail(currentUser.email);
+    else navigate("/login");
+  });
+  
+  useEffect(()=>{
+       if(payment)navigate("/");
+  },[payment])
 
-const results = faces.map(fd =>
-  faceMatcher.findBestMatch(fd.descriptor)
-);
-console.log(results);
-*/
+
+
+  const BuyNow=async()=>{ 
+    const res=await axiosIntance.get(`/order/${email}/${std_no}`);
+    console.log(res);    
+    if(res.status!=200)  return;
+
+    const {amount,currency,id}=res.data.order;
+    
+    var options = {
+      "key": "rzp_test_ZbzAdM2rFQPnfZ", // Enter the Key ID generated from the Dashboard
+      "amount": amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      "currency": currency,
+      "name": "Flix the NetflixClone", //your business name
+      "description": "Testing Transaction",
+      "image": app_logo, 
+      "order_id": id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      "handler": function (response){
+          // alert(response.razorpay_payment_id);
+          // alert(response.razorpay_order_id);
+          // alert(response.razorpay_signature);
+          setOrderId(response.razorpay_order_id);
+          setSignature(response.razorpay_signature);
+          setPaymentId(response.razorpay_payment_id);
+          setPayment(true);
+          setShow(true);
+      },
+      "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
+          "name": email.split("@")[0], //your customer's name
+          "email": email, 
+          "contact": "0123456789"  //Provide the customer's phone number for better conversion rates 
+      },
+      // "notes": {
+      //     "address": "Razorpay Corporate Office"
+      // },
+      // "theme": {
+      //     "color": "#3399cc"
+      // }
+  };
+  var rzp1 = new window.Razorpay(options);
+  rzp1.open();
+  rzp1.on('payment.failed', function (response){
+          alert(response.error.code);
+          alert(response.error.description);
+          alert(response.error.source);
+          alert(response.error.step);
+          alert(response.error.reason);
+          alert(response.error.metadata.order_id);
+          alert(response.error.metadata.payment_id);
+  });
 
   }
   
 
   return (
+    <>
+
     <Container>
+       
+   
+
       <div className="back" title="Go Back">
         <BsArrowLeftCircle onClick={() => navigate(-1)} />
       </div>
@@ -114,11 +174,16 @@ console.log(results);
       <div className="features"></div>
 
       <div className="nextButton">
-        <button onClick={detect}>
+        <button onClick={BuyNow}>
           <b>Next</b>
         </button>
+        <div>
+         
+          
+        </div>
       </div>
     </Container>
+    </>
   );
 }
 
